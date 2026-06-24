@@ -1,0 +1,51 @@
+name: shurokkha
+description: Your Safe Digital Sister - Period Health App
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  
+  # UI & Styling
+  google_fonts: ^6.1.0
+  cupertino_icons: ^1.0.6
+  flutter_colorpicker: ^1.0.3
+  animated_text_kit: ^4.2.1
+  
+  # Core & State
+  provider: ^6.0.0
+  shared_preferences: ^2.5.5
+  bloc: ^8.1.2
+  flutter_bloc: ^8.1.5
+  
+  # Features
+  image_picker: ^1.1.2
+  url_launcher: ^6.2.0
+  http: ^1.1.0
+  
+  # Firebase
+  firebase_core: ^3.15.2
+  firebase_database: ^11.0.0
+  firebase_auth: ^5.7.0
+  firebase_storage: ^12.4.10
+  cloud_firestore: ^5.6.12
+  google_sign_in: ^7.2.0
+  
+  # AI
+  google_generative_ai: ^0.4.7
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/

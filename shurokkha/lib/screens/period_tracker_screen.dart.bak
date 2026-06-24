@@ -1,0 +1,600 @@
+import 'package:flutter/material.dart';
+import '../theme/app_theme.dart';
+import '../widgets/shared_widgets.dart';
+
+class PeriodTrackerScreen extends StatefulWidget {
+  const PeriodTrackerScreen({super.key});
+
+  @override
+  State<PeriodTrackerScreen> createState() => _PeriodTrackerScreenState();
+}
+
+class _PeriodTrackerScreenState extends State<PeriodTrackerScreen> {
+  int _navIndex = 1;
+  late DateTime _currentMonth;
+  late DateTime _periodStartDate;
+  final int _cycleLength = 28;
+  final int _periodDays = 5;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentMonth = DateTime.now();
+    // Default period start date (can be updated from profile)
+    _periodStartDate = DateTime(2026, 3, 1);
+  }
+
+  // Helper methods for cycle calculation
+  bool _isPeriodDay(DateTime day) {
+    int daysDiff = day.difference(_periodStartDate).inDays;
+    int cycleDay = daysDiff % _cycleLength;
+    return cycleDay >= 0 && cycleDay < _periodDays;
+  }
+
+  bool _isOvulationDay(DateTime day) {
+    int daysDiff = day.difference(_periodStartDate).inDays;
+    int cycleDay = daysDiff % _cycleLength;
+    // Ovulation happens around day 14 of cycle (12-16)
+    return cycleDay >= 12 && cycleDay <= 16;
+  }
+
+  String _getDayType(DateTime day) {
+    if (_isPeriodDay(day)) return 'period';
+    if (_isOvulationDay(day)) return 'ovulation';
+    return 'normal';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: GradientBackground(
+        colors: const [Color(0xFFEDD9FF), Color(0xFFF0E0FF), Color(0xFFFFE6F5), Color(0xFFE8D5FF)],
+        child: SafeArea(
+          child: Column(
+            children: [
+              // Top Bar
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: const Icon(Icons.arrow_back, color: AppColors.textDark, size: 28),
+                    ),
+                    const SizedBox(width: 12),
+                    const Expanded(
+                      child: Text(
+                        'Period Calendar',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textDark,
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.info_outlined, color: AppColors.textDark),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Track your cycle to better understand your body'),
+                            backgroundColor: AppColors.primaryPurple,
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              const Divider(height: 1),
+
+              // Calendar Content
+              Expanded(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    children: [
+                      // Month Navigation
+                      Container(
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.08),
+                              blurRadius: 10,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            // Month Header
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() => _currentMonth = 
+                                      DateTime(_currentMonth.year, _currentMonth.month - 1));
+                                  },
+                                  child: const Icon(Icons.chevron_left, 
+                                    color: AppColors.primaryPurple, size: 28),
+                                ),
+                                Text(
+                                  '${_getMonthName(_currentMonth.month)} ${_currentMonth.year}',
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    color: AppColors.textDark,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() => _currentMonth = 
+                                      DateTime(_currentMonth.year, _currentMonth.month + 1));
+                                  },
+                                  child: const Icon(Icons.chevron_right, 
+                                    color: AppColors.primaryPurple, size: 28),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
+
+                            // Day Headers
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: ['S', 'M', 'T', 'W', 'T', 'F', 'S']
+                                .map((day) => Expanded(
+                                  child: Center(
+                                    child: Text(
+                                      day,
+                                      style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w700,
+                                        color: AppColors.primaryPurple,
+                                      ),
+                                    ),
+                                  ),
+                                ))
+                                .toList(),
+                            ),
+                            const SizedBox(height: 12),
+
+                            // Calendar Grid
+                            _buildCalendarGrid(),
+
+                            const SizedBox(height: 20),
+
+                            // Legend
+                            Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: AppColors.softLavender.withOpacity(0.3),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Cycle Phases',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: AppColors.textDark,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 12),
+                                  _LegendItem(
+                                    color: AppColors.softPink,
+                                    label: 'Period Days',
+                                    description: 'Your menstrual phase',
+                                  ),
+                                  const SizedBox(height: 10),
+                                  _LegendItem(
+                                    color: AppColors.textDark,
+                                    label: 'Ovulation',
+                                    description: 'Fertile window (most fertile)',
+                                  ),
+                                  const SizedBox(height: 10),
+                                  _LegendItem(
+                                    color: AppColors.mediumPink,
+                                    label: 'Symptoms',
+                                    description: 'Logged symptoms on this day',
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 20),
+
+                      // Info Cards
+                      _buildCycleInfoCards(),
+
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Add Button
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: FloatingActionButton.extended(
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        title: const Text('Set Period Date'),
+                        content: const Text(
+                          'Select the first day of your last period to update the calendar.',
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context),
+                            child: const Text('Cancel'),
+                          ),
+                          ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primaryPurple,
+                            ),
+                            onPressed: () => _selectPeriodDate(context),
+                            child: const Text(
+                              'Select Date',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  backgroundColor: AppColors.primaryPurple,
+                  label: const Text('Set Period', style: TextStyle(color: Colors.white)),
+                  icon: const Icon(Icons.add, color: Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCalendarGrid() {
+    final firstDay = DateTime(_currentMonth.year, _currentMonth.month, 1);
+    final lastDay = DateTime(_currentMonth.year, _currentMonth.month + 1, 0);
+    final firstWeekday = firstDay.weekday % 7; // 0 = Sunday
+    
+    List<Widget> dayWidgets = [];
+
+    // Empty cells for days before month starts
+    for (int i = 0; i < firstWeekday; i++) {
+      dayWidgets.add(const SizedBox.expand());
+    }
+
+    // Day cells
+    for (int day = 1; day <= lastDay.day; day++) {
+      final date = DateTime(_currentMonth.year, _currentMonth.month, day);
+      final dayType = _getDayType(date);
+      final isToday = date.year == DateTime.now().year &&
+          date.month == DateTime.now().month &&
+          date.day == DateTime.now().day;
+
+      Color backgroundColor = Colors.transparent;
+      Color textColor = AppColors.textDark;
+      Color? indicatorColor;
+
+      if (dayType == 'period') {
+        backgroundColor = AppColors.softPink.withOpacity(0.7);
+        indicatorColor = AppColors.softPink;
+      } else if (dayType == 'ovulation') {
+        backgroundColor = AppColors.textDark.withOpacity(0.2);
+        indicatorColor = AppColors.textDark;
+      }
+
+      dayWidgets.add(
+        GestureDetector(
+          onTap: () {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  dayType == 'period'
+                      ? 'Period Day - Log details'
+                      : dayType == 'ovulation'
+                          ? 'Ovulation Day - Most fertile'
+                          : 'Normal Day',
+                ),
+                backgroundColor: AppColors.primaryPurple,
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: backgroundColor,
+              border: isToday
+                  ? Border.all(color: AppColors.primaryPurple, width: 2)
+                  : null,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Stack(
+              children: [
+                Center(
+                  child: Text(
+                    '$day',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: isToday ? FontWeight.w700 : FontWeight.w500,
+                      color: textColor,
+                    ),
+                  ),
+                ),
+                if (indicatorColor != null)
+                  Positioned(
+                    bottom: 4,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                      child: Container(
+                        width: 6,
+                        height: 6,
+                        decoration: BoxDecoration(
+                          color: indicatorColor,
+                          shape: BoxShape.circle,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
+    return GridView.count(
+      crossAxisCount: 7,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      childAspectRatio: 1,
+      mainAxisSpacing: 8,
+      crossAxisSpacing: 8,
+      children: dayWidgets,
+    );
+  }
+
+  Widget _buildCycleInfoCards() {
+    final today = DateTime.now();
+    int daysInCycle = today.difference(_periodStartDate).inDays % _cycleLength;
+    int daysUntilNextPeriod = (_cycleLength - daysInCycle).abs();
+    int daysUntilOvulation = (14 - daysInCycle).abs();
+
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                AppColors.primaryPurple.withOpacity(0.8),
+                AppColors.softLavender.withOpacity(0.6),
+              ],
+            ),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Current Cycle',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Day $daysInCycle',
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Next Period',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'In $daysUntilNextPeriod days',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.8),
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 10,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.softPink.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.favorite,
+                  color: AppColors.softPink,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Ovulation Window',
+                    style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textDark,
+                    ),
+                  ),
+                  Text(
+                    'In $daysUntilOvulation days - Most fertile',
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textGrey,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _selectPeriodDate(BuildContext context) async {
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _periodStartDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: AppColors.primaryPurple,
+              onPrimary: Colors.white,
+              surface: Colors.white,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+
+    if (picked != null && mounted) {
+      setState(() => _periodStartDate = picked);
+      if (mounted) {
+        Navigator.pop(context);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Period date set to ${picked.day}/${picked.month}/${picked.year}'),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    }
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    return months[month - 1];
+  }
+}
+
+class _LegendItem extends StatelessWidget {
+  final Color color;
+  final String label;
+  final String description;
+
+  const _LegendItem({
+    required this.color,
+    required this.label,
+    required this.description,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          width: 14,
+          height: 14,
+          decoration: BoxDecoration(
+            color: color,
+            shape: BoxShape.circle,
+          ),
+        ),
+        const SizedBox(width: 12),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                label,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.textDark,
+                ),
+              ),
+              Text(
+                description,
+                style: const TextStyle(
+                  fontSize: 11,
+                  color: AppColors.textGrey,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}

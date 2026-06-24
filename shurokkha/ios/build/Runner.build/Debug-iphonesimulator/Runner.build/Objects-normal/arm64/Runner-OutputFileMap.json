@@ -1,0 +1,38 @@
+{
+  "" : {
+    "diagnostics" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/Runner-master.dia",
+    "emit-module-dependencies" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/Runner-master-emit-module.d",
+    "emit-module-diagnostics" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/Runner-master-emit-module.dia",
+    "swift-dependencies" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/Runner-master.swiftdeps"
+  },
+  "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/Runner/AppDelegate.swift" : {
+    "const-values" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/AppDelegate.swiftconstvalues",
+    "dependencies" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/AppDelegate.d",
+    "diagnostics" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/AppDelegate.dia",
+    "index-unit-output-path" : "/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/AppDelegate.o",
+    "llvm-bc" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/AppDelegate.bc",
+    "object" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/AppDelegate.o",
+    "swift-dependencies" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/AppDelegate.swiftdeps",
+    "swiftmodule" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/AppDelegate~partial.swiftmodule"
+  },
+  "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/Runner/SceneDelegate.swift" : {
+    "const-values" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/SceneDelegate.swiftconstvalues",
+    "dependencies" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/SceneDelegate.d",
+    "diagnostics" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/SceneDelegate.dia",
+    "index-unit-output-path" : "/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/SceneDelegate.o",
+    "llvm-bc" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/SceneDelegate.bc",
+    "object" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/SceneDelegate.o",
+    "swift-dependencies" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/SceneDelegate.swiftdeps",
+    "swiftmodule" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/SceneDelegate~partial.swiftmodule"
+  },
+  "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/himu/Desktop/cse299 copy 2/shurokkha/ios/build/Runner.build/Debug-iphonesimulator/Runner.build/Objects-normal/arm64/GeneratedAssetSymbols~partial.swiftmodule"
+  }
+}

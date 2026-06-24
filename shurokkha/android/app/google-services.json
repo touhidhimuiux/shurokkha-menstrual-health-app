@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "366992381516",
+    "project_id": "cse299app",
+    "storage_bucket": "cse299app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:366992381516:android:a2a3e4c58689e6696906e9",
+        "android_client_info": {
+          "package_name": "com.example.shurokkh"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1Yr6Me9ElNA9HzSJypCRj_J60wyl6jGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
